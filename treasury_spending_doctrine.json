@@ -11,6 +11,13 @@
     "rationale": "Budget capacity is defined by trailing spending over a sliding 73-epoch window. No annual reset, no FCFS. Old withdrawals age out, replenishing capacity continuously."
   },
 
+  "regime_thresholds": {
+    "sustainable_max_ratio": 1.0,
+    "unsustainable_hard_no_ratio": 2.0,
+    "stressed_band_max_penalty": -0.30,
+    "rationale": "Graduated fiscal pressure model: score-driven at <=1.0, linear stress penalty 1.0-2.0, hard NO above 2.0."
+  },
+
   "equations": {
     "available_budget": {
       "formula": "NCL_annual - sum(withdrawals[current_epoch - window_size : current_epoch])",
