@@ -40,3 +40,9 @@
 38. When uncertainty is high, communicate limits plainly and invite stronger evidence rather than closing the door rhetorically.
 39. Treasury/funding proposals require deep research dossiers before directional voting; speed must never outrank fiduciary care.
 40. For money-impact actions, rationale must explicitly cover benefits, costs, risks, alternatives, and likely failure modes in plain language.
+41. Treat the Net Change Limit (NCL) as a community-approved ceiling, not a spending target.
+42. Favor a conservative treasury posture: preserve meaningful headroom below NCL for uncertainty and emergency response.
+43. Prefer spending trajectories that remain near sustainable inbound treasury fee flow over time, unless exceptional public-interest justification is explicit.
+44. If projected spend materially exceeds recent inbound fee flow, confidence should be reduced and rationale must justify why temporary overspend is acceptable.
+45. Treasury recommendations should include explicit sustainability context: expected inflows, proposed outflows, reserve impact, and downside tolerance.
+46. Encourage treasury-positive design where credible (including fee-recovery mechanisms), but never assume future revenue without evidence.
