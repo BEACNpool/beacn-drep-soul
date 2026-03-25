@@ -1,0 +1,262 @@
+{
+  "doctrine_id": "treasury_spending_v1",
+  "version": "1.0.0",
+  "last_updated": "2026-03-25",
+  "description": "Rolling-window NCL spending framework with post-AI cost evaluation",
+
+  "spending_model": {
+    "type": "rolling_window",
+    "window_size_epochs": 73,
+    "reset_type": "none",
+    "rationale": "Budget capacity is defined by trailing spending over a sliding 73-epoch window. No annual reset, no FCFS. Old withdrawals age out, replenishing capacity continuously."
+  },
+
+  "equations": {
+    "available_budget": {
+      "formula": "NCL_annual - sum(withdrawals[current_epoch - window_size : current_epoch])",
+      "variables": {
+        "NCL_annual": "Net Change Limit set by governance for the current period",
+        "window_size": 73,
+        "withdrawals": "Sum of all approved TreasuryWithdrawals in the epoch range"
+      }
+    },
+    "effective_available": {
+      "formula": "available(e) * decay_factor ^ underspend_epochs",
+      "variables": {
+        "decay_factor": {
+          "min": 0.95,
+          "max": 0.99,
+          "default": 0.97
+        },
+        "underspend_epochs": "Count of consecutive epochs where spending < 10% of per-epoch allocation"
+      },
+      "rationale": "Prevents war-chest accumulation. Spending authorization decays, not the treasury balance itself."
+    },
+    "concentration_risk": {
+      "formula": "proposal_amount / available(current_epoch)",
+      "thresholds": {
+        "moderate": 0.15,
+        "high": 0.30,
+        "severe": 0.50
+      }
+    },
+    "cost_reasonableness": {
+      "formula": "requested_lovelace / estimated_post_ai_cost_lovelace",
+      "thresholds": {
+        "acceptable": 2.0,
+        "red_flag": 3.0,
+        "severe_red_flag": 5.0
+      }
+    }
+  },
+
+  "prioritization": {
+    "method": "drep_approval_descending",
+    "minimum_threshold": {
+      "description": "Minimum DRep approval percentage to be eligible for funding",
+      "note": "Exact value is a governance parameter. Doctrine requires a non-zero threshold exists.",
+      "recommended_floor": 0.51
+    },
+    "tie_breaking": [
+      {
+        "order": 1,
+        "criterion": "lower_ada_requested",
+        "rationale": "Fiscal conservatism"
+      },
+      {
+        "order": 2,
+        "criterion": "earlier_submission_epoch",
+        "rationale": "Minimal FCFS as last-resort tiebreaker only"
+      }
+    ]
+  },
+
+  "scoring_adjustments": {
+    "treasury_withdrawals": [
+      {
+        "id": "concentration_high",
+        "condition": "proposal requests > 30% of available(current_epoch)",
+        "penalty": -0.25,
+        "severity": "HIGH",
+        "rationale": "Single-proposal concentration risk"
+      },
+      {
+        "id": "concentration_severe",
+        "condition": "proposal requests > 50% of available(current_epoch)",
+        "penalty": -0.45,
+        "severity": "SEVERE",
+        "rationale": "Near-monopoly on remaining capacity"
+      },
+      {
+        "id": "spending_cluster",
+        "condition": "5+ withdrawals already approved in current epoch",
+        "penalty": -0.10,
+        "severity": "MODERATE",
+        "rationale": "Spending cluster — marginal withdrawals get more scrutiny"
+      },
+      {
+        "id": "low_capacity_regime",
+        "condition": "available(current_epoch) < 15% of NCL_annual",
+        "penalty": -0.15,
+        "severity": "ELEVATED",
+        "rationale": "Low-capacity regime — only highest-value proposals should proceed"
+      },
+      {
+        "id": "calendar_urgency_framing",
+        "condition": "proposal text frames urgency based on calendar position or budget period boundary",
+        "penalty": -0.20,
+        "severity": "HIGH",
+        "rationale": "Rolling window has no boundary. Calendar urgency is a manipulation signal."
+      },
+      {
+        "id": "no_ai_cost_disclosure",
+        "condition": "proposal budgets labor-hours for AI-assistable work without acknowledging AI workflows",
+        "penalty": -0.15,
+        "severity": "MODERATE",
+        "rationale": "Cost likely inflated 5-20x vs post-AI rates"
+      },
+      {
+        "id": "pre_2024_benchmarks",
+        "condition": "proposal cites cost comparisons from before widespread LLM availability",
+        "penalty": -0.10,
+        "severity": "MODERATE",
+        "rationale": "Obsolete pricing baseline"
+      },
+      {
+        "id": "headcount_driven",
+        "condition": "proposal budgets by person-months or team size rather than deliverables",
+        "penalty": -0.10,
+        "severity": "MODERATE",
+        "rationale": "Input-priced, not output-priced"
+      },
+      {
+        "id": "no_milestones",
+        "condition": "lump-sum request with no milestone-based disbursement",
+        "penalty": -0.15,
+        "severity": "MODERATE",
+        "rationale": "No on-chain verifiable checkpoints"
+      },
+      {
+        "id": "cost_ratio_red_flag",
+        "condition": "cost_reasonableness ratio > 3.0",
+        "penalty": -0.20,
+        "severity": "HIGH",
+        "rationale": "Requested amount significantly exceeds estimated post-AI cost"
+      },
+      {
+        "id": "cost_ratio_severe",
+        "condition": "cost_reasonableness ratio > 5.0",
+        "penalty": -0.35,
+        "severity": "SEVERE",
+        "rationale": "Requested amount is extreme outlier vs post-AI cost"
+      }
+    ],
+    "treasury_withdrawals_bonuses": [
+      {
+        "id": "output_priced",
+        "condition": "proposal priced by deliverables, not inputs",
+        "bonus": 0.10,
+        "rationale": "Correct cost framing"
+      },
+      {
+        "id": "ai_cost_acknowledged",
+        "condition": "proposal explicitly accounts for AI-assisted cost reduction",
+        "bonus": 0.10,
+        "rationale": "Honest cost model"
+      },
+      {
+        "id": "milestone_gated",
+        "condition": "disbursement tied to verifiable milestones",
+        "bonus": 0.10,
+        "rationale": "Reduced risk through staged funding"
+      },
+      {
+        "id": "open_source",
+        "condition": "deliverables are open-source / public goods",
+        "bonus": 0.10,
+        "rationale": "Compounding ecosystem value"
+      },
+      {
+        "id": "small_scoped",
+        "condition": "proposal is small, scoped, demonstrates value before requesting follow-on",
+        "bonus": 0.05,
+        "rationale": "Low-risk, high-signal approach"
+      }
+    ],
+    "parameter_change_ncl": [
+      {
+        "id": "ncl_increase_no_demand",
+        "condition": "proposed NCL increase without demonstrated demand (historical utilization < 60%)",
+        "penalty": -0.30,
+        "severity": "HIGH",
+        "rationale": "Enabling spending surge without evidence of need"
+      },
+      {
+        "id": "ncl_decrease_low_util",
+        "condition": "proposed NCL decrease when historical utilization consistently < 40%",
+        "bonus": 0.15,
+        "rationale": "Right-sizing the budget to actual value delivery"
+      },
+      {
+        "id": "ncl_removes_rolling_window",
+        "condition": "parameter change would remove or weaken rolling-window mechanism",
+        "penalty": -0.50,
+        "severity": "CRITICAL",
+        "rationale": "Reversion to FCFS or annual-reset is a structural failure"
+      }
+    ],
+    "info_action_budget": [
+      {
+        "id": "supports_rolling_window",
+        "condition": "sentiment signal aligns with rolling-window, merit-based spending",
+        "bonus": 0.15,
+        "rationale": "Doctrine-aligned governance signal"
+      },
+      {
+        "id": "advocates_fcfs",
+        "condition": "sentiment signal advocates for FCFS, annual-reset, or removal of quality gates",
+        "penalty": -0.25,
+        "severity": "HIGH",
+        "rationale": "Anti-doctrine governance signal"
+      },
+      {
+        "id": "calendar_urgency_info",
+        "condition": "frames budget urgency from calendar or fiscal-year position",
+        "penalty": -0.15,
+        "severity": "MODERATE",
+        "rationale": "Manipulation signal — rolling window has no boundary"
+      }
+    ]
+  },
+
+  "rejected_models": [
+    {
+      "model": "fcfs_annual_reset",
+      "reason": "Creates land rush at epoch 0, rewards speed over quality, starves late-cycle proposals, breaks catastrophically under AI-driven proposal volume increase.",
+      "vote_position": "NO on any governance action that implements or implies this model"
+    },
+    {
+      "model": "fixed_epoch_ration_no_rollover",
+      "reason": "Too rigid for legitimate large proposals. Creates artificial per-epoch ceilings that fragment funding unnecessarily.",
+      "vote_position": "NO unless rollover mechanism is included"
+    },
+    {
+      "model": "unlimited_spending_no_ncl",
+      "reason": "No constraint on treasury outflow. Invites extractive behavior.",
+      "vote_position": "ALWAYS NO"
+    }
+  ],
+
+  "principles": [
+    "Never FCFS. Submission speed is not a merit signal.",
+    "Rolling window, not annual reset. Budget capacity is defined by recent spending, not calendar boundaries.",
+    "Quality gates are non-negotiable. DRep approval thresholds prevent low-quality flooding.",
+    "AI has changed the cost basis. Evaluate proposals against post-AI marginal costs.",
+    "Decay over accumulation. Unspent capacity compresses, preventing war-chest dynamics.",
+    "Concentration limits. No single proposal should consume a disproportionate share of remaining capacity.",
+    "Output-priced, not input-priced. Fund deliverables, not headcount.",
+    "Milestone-gated disbursement preferred. Lump-sum is a risk signal.",
+    "Open-source and public goods favored. Compounding ecosystem value over private extraction.",
+    "Calendar urgency is a manipulation signal. The rolling window has no boundary."
+  ]
+}
