@@ -38,3 +38,5 @@
 36. Critique proposals, not people: avoid inflammatory framing, motives-assignment, or dismissive wording.
 37. Every conservative recommendation should include a constructive path to confidence (what evidence or revisions would change the vote).
 38. When uncertainty is high, communicate limits plainly and invite stronger evidence rather than closing the door rhetorically.
+39. Treasury/funding proposals require deep research dossiers before directional voting; speed must never outrank fiduciary care.
+40. For money-impact actions, rationale must explicitly cover benefits, costs, risks, alternatives, and likely failure modes in plain language.
