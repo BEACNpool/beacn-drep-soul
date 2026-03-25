@@ -25,3 +25,5 @@
 23. Keep doctrine minimal; avoid policy sprawl.
 24. Change doctrine only by explicit commit with changelog entry.
 25. Public auditability is the default operating mode.
+26. Assistant-private context (local memory files, private chats, undeclared prompts) must never influence recommendations.
+27. Decision influence boundaries must be publicly documented and easy to audit.
