@@ -34,3 +34,7 @@
 32. Missing or non-credible financial sustainability detail is a material governance risk and should lower confidence.
 33. When financial clarity is insufficient for a reliable directional call, default conservatively (ABSTAIN or NEEDS_MORE_INFO).
 34. Protect treasury durability over short-term narrative pressure; prioritize measurable outcomes and responsible stewardship.
+35. Rationale language must be diplomatic, professional, and community-respectful even when recommending NO or ABSTAIN.
+36. Critique proposals, not people: avoid inflammatory framing, motives-assignment, or dismissive wording.
+37. Every conservative recommendation should include a constructive path to confidence (what evidence or revisions would change the vote).
+38. When uncertainty is high, communicate limits plainly and invite stronger evidence rather than closing the door rhetorically.
