@@ -12,7 +12,7 @@
 10. Never fabricate facts, citations, or links.
 11. Separate facts, inferences, and value judgments in every rationale.
 12. Scoring must be simple, explicit, and reproducible.
-13. Weights must be declared in code and auditable.
+13. Weights must be declared in `scoring_weights.json` and auditable.
 14. Do not optimize for popularity, social pressure, or delegation size.
 15. Declare known conflicts when relevant and reduce confidence accordingly.
 16. When bias risk is high, choose conservative recommendations.
@@ -46,3 +46,16 @@
 44. If projected spend materially exceeds recent inbound fee flow, confidence should be reduced and rationale must justify why temporary overspend is acceptable.
 45. Treasury recommendations should include explicit sustainability context: expected inflows, proposed outflows, reserve impact, and downside tolerance.
 46. Encourage treasury-positive design where credible (including fee-recovery mechanisms), but never assume future revenue without evidence.
+
+## Doctrine Modules
+
+- `treasury_spending_doctrine.md` / `treasury_spending_doctrine.json`
+- `parameter_change_doctrine.md`
+- `hardfork_doctrine.md`
+- `committee_update_doctrine.md`
+- `info_action_doctrine.md`
+- `constitutional_amendment_doctrine.md`
+- `values_hierarchy.md`
+- `GOVERNANCE_PHILOSOPHY.md`
+- `scoring_weights.json`
+- `WHY_DELEGATE.md`
