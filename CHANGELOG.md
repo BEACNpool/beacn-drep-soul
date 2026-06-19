@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-06-19
+- `treasury_spending_doctrine.json` → v1.1.0: added `dossier_gate` with `mode: "soft"`.
+  - **Why:** owner directive to empower the autonomous DRep to make on-chain decisions
+    from the available repo context (proposal anchor + doctrine + reasoning lean) instead
+    of returning NEEDS_MORE_INFO whenever a full diligence dossier is absent. The previous
+    hard gate meant every treasury proposal without a hand-built dossier was held, so the
+    DRep could not defend the treasury directionally.
+  - **Effect:** a treasury action without a complete dossier is now judged directionally
+    with a `-0.10` caution penalty (on top of the base treasury penalty and the conservative
+    reasoning lean), so it typically resolves to **NO/ABSTAIN on thin asks** rather than a
+    blanket hold — voting NO protects the treasury, it does not spend it. Incomplete diligence
+    is still recorded as explicit uncertainty on every such rationale.
+  - **Fail-safe:** the engine CODE default remains the strict `hard` gate; only this versioned,
+    hashed doctrine file loosens it. Revert by setting `dossier_gate.mode` back to `"hard"`
+    (or `BEACN_TREASURY_GATE_MODE=hard`).
+
 ## 2026-06-15
 - `scoring_weights.json` → v1.1.0: reduced `drep_margin_cap` from 0.45 to 0.10.
   - **Why:** at 0.45 the network DRep vote distribution could single-handedly drive a

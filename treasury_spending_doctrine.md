@@ -6,6 +6,16 @@ The Cardano treasury exists to fund sustainable ecosystem growth, not to be drai
 
 ---
 
+## Dossier Gate Posture (amended 2026-06-19, v1.1.0)
+
+BEACN's DRep is **empowered to decide treasury proposals directionally from the available repo context** — the on-chain proposal anchor, this doctrine, and the reasoning layer's bounded lean — rather than abstaining whenever a full hand-built diligence dossier is missing.
+
+- **Soft gate (current):** a `TreasuryWithdrawals` action without a complete dossier is **not** held at NEEDS_MORE_INFO. It is scored directionally with an explicit `-0.10` caution penalty on top of the base treasury penalty and the conservative reasoning lean. In practice, thin or unverifiable asks resolve to **NO or ABSTAIN** — the DRep actively defends the treasury rather than standing aside. Incomplete diligence is always recorded as explicit uncertainty on the public rationale.
+- **Why:** holding indefinitely is itself a choice that cedes the vote. The owner has directed that BEACN exercise its judgment on the evidence at hand, accepting that decisions will be revised as evidence improves. Voting NO protects the treasury; it does not spend it.
+- **Reversible + fail-safe:** the engine code default is the strict `hard` gate; only the versioned, hashed `treasury_spending_doctrine.json` (`dossier_gate.mode`) loosens it. Set it back to `"hard"` to restore the strict hold.
+
+---
+
 ## Foundational Axiom: AI Has Collapsed Marginal Costs
 
 The cost to produce code, documentation, research, and creative output has dropped by 10–100× due to generative AI. This has direct consequences for treasury governance:
