@@ -1,6 +1,6 @@
 {
   "doctrine_id": "treasury_spending_v1",
-  "version": "1.2.0",
+  "version": "1.1.0",
   "last_updated": "2026-06-19",
   "description": "Rolling-window NCL spending framework with post-AI cost evaluation",
   "spending_model": {
@@ -13,8 +13,7 @@
     "sustainable_max_ratio": 1.0,
     "unsustainable_hard_no_ratio": 2.0,
     "stressed_band_max_penalty": -0.3,
-    "rationale": "Graduated fiscal pressure model: score-driven at <=1.0, linear stress penalty 1.0-2.0, hard NO above 2.0.",
-    "basis": "Ratio = enacted treasury withdrawals / TRUE treasury inflow over the trailing 36 epochs, where inflow = ada_pots treasury delta + enacted withdrawals (i.e. tau share of the reward pot + donations). The pre-2026-07-04 fee-only inflow basis understated inflow ~500x and pinned the regime at 'unsustainable' (ratio ~1776) regardless of fiscal reality; fee inflow is retained only as an organic-revenue context signal."
+    "rationale": "Graduated fiscal pressure model: score-driven at <=1.0, linear stress penalty 1.0-2.0, hard NO above 2.0."
   },
   "equations": {
     "available_budget": {
@@ -264,28 +263,5 @@
     "mode": "soft",
     "incomplete_penalty": -0.1,
     "rationale": "Owner directive 2026-06-19: empower the DRep to make on-chain decisions from available repo context (anchor + doctrine + reasoning lean) instead of abstaining when a full diligence dossier is absent. Treasury without a complete dossier is NOT blocked; it is judged directionally with a caution penalty so the agent defends the treasury (typically NO/ABSTAIN on thin asks) rather than holding. Revert to strict by setting mode to 'hard'. Engine code default remains 'hard' (fail-safe)."
-  },
-  "profile_rules": {
-    "version_added": "1.2.0",
-    "rationale": "Different treasury spend shapes carry different diligence expectations; applying one rubric to all of them produces category errors (e.g. demanding milestone-gated disbursement from a one-time deposit reimbursement).",
-    "profiles": {
-      "reimbursement": {
-        "match": "metadata title contains reimburse/reimbursement/refund",
-        "adjustments": "no_milestones penalty NOT applied; verifiability of the underlying loss/event is the decisive evidence question."
-      },
-      "maintenance": {
-        "match": "metadata title contains maintenance/maintain/upkeep",
-        "adjustments": "standard rubric; continuity/track-record evidence weighs more than novelty claims (informational for the reasoning lean)."
-      },
-      "event": {
-        "match": "metadata title contains summit/conference/day/hackathon/event",
-        "adjustments": "standard rubric; measurable-outcome uncertainty must be explicit (informational for the reasoning lean)."
-      },
-      "general": {
-        "match": "everything else",
-        "adjustments": "standard rubric."
-      }
-    },
-    "determinism": "Profile detection is deterministic from on-chain metadata title; the engine records the detected profile in the public facts."
   }
 }

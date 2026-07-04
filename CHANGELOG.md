@@ -1,5 +1,24 @@
 # Changelog
 
+## 2026-07-04
+- `treasury_spending_doctrine.json` → v1.2.0 (owner directive: full system audit remediation).
+  - **True flow basis:** the sustainability regime ratio is now enacted withdrawals vs TRUE
+    treasury inflow (ada_pots treasury delta + enacted withdrawals = tau share + donations)
+    over 36 epochs. The old fee-only inflow basis understated inflow ~500x and pinned every
+    treasury action at "unsustainable" (ratio ~1776); the honest ratio at adoption is ~2.28 —
+    still unsustainable under the unchanged thresholds (≤1.0 sustainable, >2.0 hard-no), so no
+    vote direction changes, but the published claim is now correct and falsifiable.
+  - **Profile rules (new):** deterministic treasury sub-profiles from the on-chain title
+    (reimbursement / maintenance / event / general). Reimbursements are exempt from the
+    `no_milestones` penalty — demanding milestone-gated disbursement from a one-time deposit
+    reimbursement was a category error (seen live on the Ikigai action). The engine records
+    the detected profile in the public facts.
+- `values_hierarchy.md`: reconciled with the v1.1.0 soft gate (the "prefer NEEDS_MORE_INFO"
+  default contradicted live doctrine), required rationales to attribute outstanding evidence
+  honestly (proposer's homework vs BEACN's own), and codified that confidence measures
+  verified evidence coverage, capped at 0.90 — never penalty size (the engine had published
+  "confidence 1.0" on thin-evidence NO votes).
+
 ## 2026-06-19
 - `treasury_spending_doctrine.json` → v1.1.0: added `dossier_gate` with `mode: "soft"`.
   - **Why:** owner directive to empower the autonomous DRep to make on-chain decisions

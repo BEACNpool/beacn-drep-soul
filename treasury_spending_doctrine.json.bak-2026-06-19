@@ -1,21 +1,23 @@
 {
   "doctrine_id": "treasury_spending_v1",
-  "version": "1.2.0",
-  "last_updated": "2026-06-19",
+  "version": "1.0.0",
+  "last_updated": "2026-03-25",
   "description": "Rolling-window NCL spending framework with post-AI cost evaluation",
+
   "spending_model": {
     "type": "rolling_window",
     "window_size_epochs": 73,
     "reset_type": "none",
     "rationale": "Budget capacity is defined by trailing spending over a sliding 73-epoch window. No annual reset, no FCFS. Old withdrawals age out, replenishing capacity continuously."
   },
+
   "regime_thresholds": {
     "sustainable_max_ratio": 1.0,
     "unsustainable_hard_no_ratio": 2.0,
-    "stressed_band_max_penalty": -0.3,
-    "rationale": "Graduated fiscal pressure model: score-driven at <=1.0, linear stress penalty 1.0-2.0, hard NO above 2.0.",
-    "basis": "Ratio = enacted treasury withdrawals / TRUE treasury inflow over the trailing 36 epochs, where inflow = ada_pots treasury delta + enacted withdrawals (i.e. tau share of the reward pot + donations). The pre-2026-07-04 fee-only inflow basis understated inflow ~500x and pinned the regime at 'unsustainable' (ratio ~1776) regardless of fiscal reality; fee inflow is retained only as an organic-revenue context signal."
+    "stressed_band_max_penalty": -0.30,
+    "rationale": "Graduated fiscal pressure model: score-driven at <=1.0, linear stress penalty 1.0-2.0, hard NO above 2.0."
   },
+
   "equations": {
     "available_budget": {
       "formula": "NCL_annual - sum(withdrawals[current_epoch - window_size : current_epoch])",
@@ -41,8 +43,8 @@
       "formula": "proposal_amount / available(current_epoch)",
       "thresholds": {
         "moderate": 0.15,
-        "high": 0.3,
-        "severe": 0.5
+        "high": 0.30,
+        "severe": 0.50
       }
     },
     "cost_reasonableness": {
@@ -54,6 +56,7 @@
       }
     }
   },
+
   "prioritization": {
     "method": "drep_approval_descending",
     "minimum_threshold": {
@@ -74,6 +77,7 @@
       }
     ]
   },
+
   "scoring_adjustments": {
     "treasury_withdrawals": [
       {
@@ -93,21 +97,21 @@
       {
         "id": "spending_cluster",
         "condition": "5+ withdrawals already approved in current epoch",
-        "penalty": -0.1,
+        "penalty": -0.10,
         "severity": "MODERATE",
-        "rationale": "Spending cluster \u2014 marginal withdrawals get more scrutiny"
+        "rationale": "Spending cluster — marginal withdrawals get more scrutiny"
       },
       {
         "id": "low_capacity_regime",
         "condition": "available(current_epoch) < 15% of NCL_annual",
         "penalty": -0.15,
         "severity": "ELEVATED",
-        "rationale": "Low-capacity regime \u2014 only highest-value proposals should proceed"
+        "rationale": "Low-capacity regime — only highest-value proposals should proceed"
       },
       {
         "id": "calendar_urgency_framing",
         "condition": "proposal text frames urgency based on calendar position or budget period boundary",
-        "penalty": -0.2,
+        "penalty": -0.20,
         "severity": "HIGH",
         "rationale": "Rolling window has no boundary. Calendar urgency is a manipulation signal."
       },
@@ -121,14 +125,14 @@
       {
         "id": "pre_2024_benchmarks",
         "condition": "proposal cites cost comparisons from before widespread LLM availability",
-        "penalty": -0.1,
+        "penalty": -0.10,
         "severity": "MODERATE",
         "rationale": "Obsolete pricing baseline"
       },
       {
         "id": "headcount_driven",
         "condition": "proposal budgets by person-months or team size rather than deliverables",
-        "penalty": -0.1,
+        "penalty": -0.10,
         "severity": "MODERATE",
         "rationale": "Input-priced, not output-priced"
       },
@@ -142,7 +146,7 @@
       {
         "id": "cost_ratio_red_flag",
         "condition": "cost_reasonableness ratio > 3.0",
-        "penalty": -0.2,
+        "penalty": -0.20,
         "severity": "HIGH",
         "rationale": "Requested amount significantly exceeds estimated post-AI cost"
       },
@@ -158,25 +162,25 @@
       {
         "id": "output_priced",
         "condition": "proposal priced by deliverables, not inputs",
-        "bonus": 0.1,
+        "bonus": 0.10,
         "rationale": "Correct cost framing"
       },
       {
         "id": "ai_cost_acknowledged",
         "condition": "proposal explicitly accounts for AI-assisted cost reduction",
-        "bonus": 0.1,
+        "bonus": 0.10,
         "rationale": "Honest cost model"
       },
       {
         "id": "milestone_gated",
         "condition": "disbursement tied to verifiable milestones",
-        "bonus": 0.1,
+        "bonus": 0.10,
         "rationale": "Reduced risk through staged funding"
       },
       {
         "id": "open_source",
         "condition": "deliverables are open-source / public goods",
-        "bonus": 0.1,
+        "bonus": 0.10,
         "rationale": "Compounding ecosystem value"
       },
       {
@@ -190,7 +194,7 @@
       {
         "id": "ncl_increase_no_demand",
         "condition": "proposed NCL increase without demonstrated demand (historical utilization < 60%)",
-        "penalty": -0.3,
+        "penalty": -0.30,
         "severity": "HIGH",
         "rationale": "Enabling spending surge without evidence of need"
       },
@@ -203,7 +207,7 @@
       {
         "id": "ncl_removes_rolling_window",
         "condition": "parameter change would remove or weaken rolling-window mechanism",
-        "penalty": -0.5,
+        "penalty": -0.50,
         "severity": "CRITICAL",
         "rationale": "Reversion to FCFS or annual-reset is a structural failure"
       }
@@ -227,10 +231,11 @@
         "condition": "frames budget urgency from calendar or fiscal-year position",
         "penalty": -0.15,
         "severity": "MODERATE",
-        "rationale": "Manipulation signal \u2014 rolling window has no boundary"
+        "rationale": "Manipulation signal — rolling window has no boundary"
       }
     ]
   },
+
   "rejected_models": [
     {
       "model": "fcfs_annual_reset",
@@ -248,6 +253,7 @@
       "vote_position": "ALWAYS NO"
     }
   ],
+
   "principles": [
     "Never FCFS. Submission speed is not a merit signal.",
     "Rolling window, not annual reset. Budget capacity is defined by recent spending, not calendar boundaries.",
@@ -259,33 +265,5 @@
     "Milestone-gated disbursement preferred. Lump-sum is a risk signal.",
     "Open-source and public goods favored. Compounding ecosystem value over private extraction.",
     "Calendar urgency is a manipulation signal. The rolling window has no boundary."
-  ],
-  "dossier_gate": {
-    "mode": "soft",
-    "incomplete_penalty": -0.1,
-    "rationale": "Owner directive 2026-06-19: empower the DRep to make on-chain decisions from available repo context (anchor + doctrine + reasoning lean) instead of abstaining when a full diligence dossier is absent. Treasury without a complete dossier is NOT blocked; it is judged directionally with a caution penalty so the agent defends the treasury (typically NO/ABSTAIN on thin asks) rather than holding. Revert to strict by setting mode to 'hard'. Engine code default remains 'hard' (fail-safe)."
-  },
-  "profile_rules": {
-    "version_added": "1.2.0",
-    "rationale": "Different treasury spend shapes carry different diligence expectations; applying one rubric to all of them produces category errors (e.g. demanding milestone-gated disbursement from a one-time deposit reimbursement).",
-    "profiles": {
-      "reimbursement": {
-        "match": "metadata title contains reimburse/reimbursement/refund",
-        "adjustments": "no_milestones penalty NOT applied; verifiability of the underlying loss/event is the decisive evidence question."
-      },
-      "maintenance": {
-        "match": "metadata title contains maintenance/maintain/upkeep",
-        "adjustments": "standard rubric; continuity/track-record evidence weighs more than novelty claims (informational for the reasoning lean)."
-      },
-      "event": {
-        "match": "metadata title contains summit/conference/day/hackathon/event",
-        "adjustments": "standard rubric; measurable-outcome uncertainty must be explicit (informational for the reasoning lean)."
-      },
-      "general": {
-        "match": "everything else",
-        "adjustments": "standard rubric."
-      }
-    },
-    "determinism": "Profile detection is deterministic from on-chain metadata title; the engine records the detected profile in the public facts."
-  }
+  ]
 }
