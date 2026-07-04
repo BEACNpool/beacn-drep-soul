@@ -1,6 +1,6 @@
 {
   "doctrine_id": "treasury_spending_v1",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "last_updated": "2026-06-19",
   "description": "Rolling-window NCL spending framework with post-AI cost evaluation",
   "spending_model": {
@@ -287,5 +287,17 @@
       }
     },
     "determinism": "Profile detection is deterministic from on-chain metadata title; the engine records the detected profile in the public facts."
+  },
+  "dossier_approval": {
+    "version_added": "1.3.0",
+    "mode": "agentic",
+    "rationale": "Owner directive 2026-07-04: the diligence workflow is fully agentic end-to-end. A machine-drafted dossier may be approved WITHOUT a human in the loop when it passes (a) deterministic gates: all 7 sections grounded, pinned anchor whose sha256 matches the drafting receipt, financial+risk extraction rows present; and (b) an INDEPENDENT model verification pass that re-checks every dossier FACT against the anchor text: >=90% of facts verified as supported, zero material discrepancies (a material discrepancy is a fact the anchor contradicts, or an invented figure/name/commitment). Approval is recorded as status 'approved_agentic' with the full verification attestation (per-fact verdicts, ratios, prompt/output hashes) in the dossier receipt.",
+    "verification_thresholds": {
+      "min_fact_support_ratio": 0.9,
+      "max_material_discrepancies": 0
+    },
+    "human_role": "Random spot-checks of the published dossiers, receipts, and verification attestations on the public website (all published per action). Any human finding of a fabricated or contradicted fact reverts that dossier to 'no' and is a doctrine incident.",
+    "fail_safe": "A dossier that fails verification keeps dossier_complete='no' (engine keeps the soft-gate caution penalty and the wider \u00b10.12 threshold). Verification can only ever RAISE the evidence bar that was met, never lower a gate.",
+    "kill_switch": "BEACN_DOSSIER_AUTOAPPROVE_DISABLED=1 stops agentic approval; --approve remains for manual review."
   }
 }

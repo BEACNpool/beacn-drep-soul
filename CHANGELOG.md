@@ -1,5 +1,21 @@
 # Changelog
 
+## 2026-07-04 (second entry)
+- `treasury_spending_doctrine.json` → v1.3.0: `dossier_approval.mode = "agentic"` (owner
+  directive: fully agentic end-to-end, human checks randomly via the website).
+  - **What changed:** a machine-drafted diligence dossier no longer waits for a human
+    `--approve`. It is auto-approved when it passes deterministic gates (7/7 sections
+    grounded, anchor sha256 matches the drafting receipt, financial+risk extraction rows
+    present) AND an independent model verification pass that re-checks every dossier FACT
+    against the anchor text (≥90% supported, zero material discrepancies). Approval status
+    is `approved_agentic`, with the full per-fact verification attestation published in the
+    dossier receipt.
+  - **Human role:** random spot-checks of the published dossiers/receipts/attestations on
+    the public site. A confirmed fabricated or contradicted fact reverts the dossier and is
+    a doctrine incident.
+  - **Fail-safe:** verification failure keeps `dossier_complete: no` (soft-gate penalty and
+    the wider ±0.12 threshold stay). Kill switch: `BEACN_DOSSIER_AUTOAPPROVE_DISABLED=1`.
+
 ## 2026-07-04
 - `treasury_spending_doctrine.json` → v1.2.0 (owner directive: full system audit remediation).
   - **True flow basis:** the sustainability regime ratio is now enacted withdrawals vs TRUE
