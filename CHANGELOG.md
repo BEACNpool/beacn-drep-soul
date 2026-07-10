@@ -82,3 +82,8 @@
 - Added `scoring_weights.json` as canonical auditable weights surface.
 - Added `WHY_DELEGATE.md` for delegator-facing transparency.
 - Updated principle 13 in README to point at `scoring_weights.json` (not embedded code).
+## 2026-07-10
+- `treasury_spending_doctrine.json` → v1.5.0: added a project-neutral counterfactual infrastructure model.
+  - Established service, builder workflow dependency, functional substitutability, and non-funding disruption risk are explicit verified benefit inputs.
+  - Intrinsic merit is published separately from NCL/portfolio executability.
+  - Founder preference and personal use have zero direct score weight.

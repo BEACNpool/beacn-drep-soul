@@ -1,7 +1,7 @@
 {
   "doctrine_id": "treasury_spending_v1",
-  "version": "1.4.0",
-  "last_updated": "2026-06-19",
+  "version": "1.5.0",
+  "last_updated": "2026-07-10",
   "description": "Rolling-window NCL spending framework with post-AI cost evaluation",
   "spending_model": {
     "type": "rolling_window",
@@ -260,6 +260,24 @@
     "Open-source and public goods favored. Compounding ecosystem value over private extraction.",
     "Calendar urgency is a manipulation signal. The rolling window has no boundary."
   ],
+  "counterfactual_infrastructure_value": {
+    "version_added": "1.5.0",
+    "rule": "Apply identically to every established infrastructure proposal; no project or founder-specific exceptions.",
+    "benefit_weights": {
+      "critical_infrastructure": 0.18,
+      "open_source_public_good": 0.08,
+      "measurable_existing_adoption": 0.15,
+      "ecosystem_leverage": 0.12,
+      "strategic_necessity": 0.1,
+      "credible_prior_delivery": 0.1,
+      "established_service": 0.1,
+      "builder_workflow_dependency": 0.08,
+      "low_functional_substitutability": 0.05,
+      "non_funding_disruption_risk": 0.04
+    },
+    "merit_vs_execution": "Intrinsic merit uses verified benefit/delivery/cost/downside floors. Executability additionally requires a verified dossier, applicable on-chain NCL, and opportunity-cost portfolio capacity.",
+    "conflict_rule": "Founder or operator personal use has zero direct score weight and must be disclosed if cited as non-binding testimony."
+  },
   "dossier_gate": {
     "mode": "hard",
     "incomplete_penalty": -0.1,

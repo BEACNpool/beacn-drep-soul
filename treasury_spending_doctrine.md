@@ -6,13 +6,16 @@ The Cardano treasury exists to fund sustainable ecosystem growth, not to be drai
 
 ---
 
-## Dossier Gate Posture (amended 2026-06-19, v1.1.0)
+## Dossier Gate Posture (amended 2026-07-10, v1.5.0)
 
-BEACN's DRep is **empowered to decide treasury proposals directionally from the available repo context** — the on-chain proposal anchor, this doctrine, and the reasoning layer's bounded lean — rather than abstaining whenever a full hand-built diligence dossier is missing.
+BEACN separates **intrinsic merit** from **execution eligibility**. A proposal can clear the
+benefit, delivery, cost, and downside-risk floors while its executable vote remains held by an
+unverified dossier, NCL, or portfolio-capacity gate. Both conclusions are published.
 
-- **Soft gate (current):** a `TreasuryWithdrawals` action without a complete dossier is **not** held at NEEDS_MORE_INFO. It is scored directionally with an explicit `-0.10` caution penalty on top of the base treasury penalty and the conservative reasoning lean. In practice, thin or unverifiable asks resolve to **NO or ABSTAIN** — the DRep actively defends the treasury rather than standing aside. Incomplete diligence is always recorded as explicit uncertainty on the public rationale.
-- **Why:** holding indefinitely is itself a choice that cedes the vote. The owner has directed that BEACN exercise its judgment on the evidence at hand, accepting that decisions will be revised as evidence improves. Voting NO protects the treasury; it does not spend it.
-- **Reversible + fail-safe:** the engine code default is the strict `hard` gate; only the versioned, hashed `treasury_spending_doctrine.json` (`dossier_gate.mode`) loosens it. Set it back to `"hard"` to restore the strict hold.
+- **Hard gate (current):** incomplete independently verified diligence means `NEEDS_MORE_INFO`, never an automatic NO.
+- **No outcome exceptions:** founder use, identity, popularity, and private preference have zero direct weight.
+- **Counterfactual risk:** for established infrastructure, the engine evaluates the ecosystem cost of non-funding, workflow dependency, replacement difficulty, sustained operation, and verified adoption alongside spending risk.
+- **Final abstention is exceptional:** unresolved diligence is an active research state. ABSTAIN is reserved for conflicts, mandate limits, or cases where participation itself would be inappropriate.
 
 ---
 
@@ -216,3 +219,5 @@ cost_ratio = requested_ada / estimated_post_ai_cost
 8. **Milestone-gated disbursement preferred.** Lump-sum is a risk signal.
 9. **Open-source and public goods favored.** Compounding ecosystem value over private extraction.
 10. **Calendar urgency is a manipulation signal.** The rolling window has no boundary — reject framing that implies time pressure from fiscal-year position.
+11. **Price the risk of non-funding.** Losing established infrastructure can be more costly than funding it.
+12. **Publish merit separately from executability.** NCL and portfolio gates cannot erase demonstrated intrinsic value.
