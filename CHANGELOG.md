@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.4.0 — 2026-07-09
+- Restored the hard treasury dossier gate: missing evidence now yields `NEEDS_MORE_INFO`, not a
+  penalty-driven directional `NO`.
+- Adopted a balanced four-dimension treasury contract: ecosystem benefit, delivery confidence,
+  cost efficiency, and downside protection.
+- Directional `NO` now requires affirmative independently verified waste/harm evidence; absence of
+  evidence is never treated as evidence against a proposal.
+- Language-model analysis is advisory-only and cannot change the binding vote.
+
 ## 2026-07-04 (second entry)
 - `treasury_spending_doctrine.json` → v1.3.0: `dossier_approval.mode = "agentic"` (owner
   directive: fully agentic end-to-end, human checks randomly via the website).

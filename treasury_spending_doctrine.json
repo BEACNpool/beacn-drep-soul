@@ -1,6 +1,6 @@
 {
   "doctrine_id": "treasury_spending_v1",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "last_updated": "2026-06-19",
   "description": "Rolling-window NCL spending framework with post-AI cost evaluation",
   "spending_model": {
@@ -261,9 +261,9 @@
     "Calendar urgency is a manipulation signal. The rolling window has no boundary."
   ],
   "dossier_gate": {
-    "mode": "soft",
+    "mode": "hard",
     "incomplete_penalty": -0.1,
-    "rationale": "Owner directive 2026-06-19: empower the DRep to make on-chain decisions from available repo context (anchor + doctrine + reasoning lean) instead of abstaining when a full diligence dossier is absent. Treasury without a complete dossier is NOT blocked; it is judged directionally with a caution penalty so the agent defends the treasury (typically NO/ABSTAIN on thin asks) rather than holding. Revert to strict by setting mode to 'hard'. Engine code default remains 'hard' (fail-safe)."
+    "rationale": "Doctrine v1.4.0 restores the strict evidence rule: an incomplete treasury dossier means NEEDS_MORE_INFO, never directional NO. Missing information is not affirmative evidence of waste. Directional NO requires independently verified evidence of low value, duplication, excessive cost, failed delivery, private capture, or unacceptable downside; YES requires verified benefit, delivery, cost, and protection floors."
   },
   "profile_rules": {
     "version_added": "1.2.0",
