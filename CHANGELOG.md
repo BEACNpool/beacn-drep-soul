@@ -1,5 +1,50 @@
 # Changelog
 
+Entries are ordered newest-first.
+
+## 1.6.0 — 2026-07-15
+- Reconciliation amendment: prose/consistency fixes only. **No scoring weights or thresholds
+  changed; no vote can flip from this amendment.** Every numeric value in
+  `scoring_weights.json` and `treasury_spending_doctrine.json` is byte-identical to v1.5.0.
+- `values_hierarchy.md`: removed the retired v1.1.0 soft-gate passage ("judge directionally …
+  with a caution penalty"). It now states the live v1.4.0+ hard-gate rule: incomplete
+  independently verified diligence yields `NEEDS_MORE_INFO`, never a penalty-driven directional
+  call; directional NO requires affirmative independently verified evidence.
+- `treasury_spending_doctrine.json` → v1.6.0:
+  - `dossier_approval.fail_safe` prose no longer describes soft-gate behavior; it states the
+    hard-mode reality (failed verification keeps `dossier_complete='no'` → `NEEDS_MORE_INFO`
+    under the current hard gate).
+  - `dossier_gate.rationale` now states that `incomplete_penalty` (kept — the engine reads it
+    in soft mode) is dormant and applies only if `mode` is ever set back to soft.
+- `treasury_spending_doctrine.md` synced with the JSON: added the moderate 0.15 concentration
+  threshold to the scoring-adjustments table and the equations reference (context flag only —
+  no score penalty exists at that tier), and noted the dormant `incomplete_penalty` in the
+  Dossier Gate Posture section.
+- Deleted the two committed backups `treasury_spending_doctrine.json.bak-2026-06-19` and
+  `.bak-2026-07-04` (git history preserves them; stray `.bak` copies in the repo root are a
+  loader-glob risk).
+- Added `DOCTRINE_PRECEDENCE.md`: explicit precedence order for conflicts between doctrine
+  sources; a detected conflict is a doctrine incident to fix by amendment.
+- Added `no_confidence_doctrine.md`: the missing seventh action-type module (Motion of
+  No-Confidence), same format as the other modules.
+- Added `scripts/lint_doctrine.py` + CI workflow `.github/workflows/lint.yml`: JSON validity,
+  benefit-weight sum, changelog/version cross-check, no `.bak` files, md↔json threshold sync
+  (best-effort), and a values_hierarchy soft-gate regression guard.
+- Reordered this changelog strictly newest-first (entries were previously out of order).
+
+### Known open reconciliations (v2.0.0 scope)
+- `regime_thresholds` prose says ratio > 2.0 is a "hard NO", but the engine applies the flow
+  regime as an advisory score signal (`treasury_flow_unsustainable_penalty`), and v1.4.0
+  requires affirmative independently verified evidence for any directional NO. This three-way
+  tension is documented, not resolved: it is deliberately deferred to the v2.0.0 envelope
+  rewrite. The thresholds themselves are unchanged.
+
+## 2026-07-10
+- `treasury_spending_doctrine.json` → v1.5.0: added a project-neutral counterfactual infrastructure model.
+  - Established service, builder workflow dependency, functional substitutability, and non-funding disruption risk are explicit verified benefit inputs.
+  - Intrinsic merit is published separately from NCL/portfolio executability.
+  - Founder preference and personal use have zero direct score weight.
+
 ## 1.4.0 — 2026-07-09
 - Restored the hard treasury dossier gate: missing evidence now yields `NEEDS_MORE_INFO`, not a
   penalty-driven directional `NO`.
@@ -71,10 +116,6 @@
     bonuses must carry any directional call. This is a values-compliance fix, not a new value.
   - Engine code unchanged; the cap is read from this versioned, hashed file.
 
-## 2026-03-24
-- Initial doctrine established.
-- Added reproducibility, uncertainty, and conflict-handling commitments.
-
 ## 2026-03-26
 - Added action-specific doctrine modules: parameter changes, hard forks, committee updates, info actions, constitutional amendments.
 - Added `GOVERNANCE_PHILOSOPHY.md` for human-readable rationale behind doctrine.
@@ -82,8 +123,7 @@
 - Added `scoring_weights.json` as canonical auditable weights surface.
 - Added `WHY_DELEGATE.md` for delegator-facing transparency.
 - Updated principle 13 in README to point at `scoring_weights.json` (not embedded code).
-## 2026-07-10
-- `treasury_spending_doctrine.json` → v1.5.0: added a project-neutral counterfactual infrastructure model.
-  - Established service, builder workflow dependency, functional substitutability, and non-funding disruption risk are explicit verified benefit inputs.
-  - Intrinsic merit is published separately from NCL/portfolio executability.
-  - Founder preference and personal use have zero direct score weight.
+
+## 2026-03-24
+- Initial doctrine established.
+- Added reproducibility, uncertainty, and conflict-handling commitments.

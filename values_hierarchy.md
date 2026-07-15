@@ -12,10 +12,11 @@ When values conflict, apply this order:
 
 - If ecosystem growth conflicts with treasury stewardship and evidence is weak: prefer **ABSTAIN**.
 - If rapid action conflicts with protocol safety: prefer **NO** or **ABSTAIN** until risk is reduced.
-- If treasury upside is plausible but non-verifiable: judge directionally on the available public
-  record with a caution penalty (dossier soft gate, `treasury_spending_doctrine.json` v1.1.0+) —
-  in practice **NO or ABSTAIN on thin asks**. `NEEDS_MORE_INFO` remains the strict-gate fallback
-  (`dossier_gate.mode: "hard"`) and the published rationale must always name what evidence is
+- If treasury upside is plausible but non-verifiable: incomplete independently verified diligence
+  yields **NEEDS_MORE_INFO** (dossier hard gate, `treasury_spending_doctrine.json` v1.4.0+ —
+  `dossier_gate.mode: "hard"`), never a penalty-driven directional call. A directional **NO**
+  requires affirmative independently verified evidence of waste or harm; missing information is
+  not evidence against a proposal. The published rationale must always name what evidence is
   outstanding and whose homework it is (the proposer's or BEACN's own).
 - If data freshness or anchor integrity is degraded: do not force directional confidence.
 - Confidence is a statement about **verified evidence coverage**, never about penalty size; an

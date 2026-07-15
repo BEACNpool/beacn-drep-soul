@@ -1,7 +1,7 @@
 {
   "doctrine_id": "treasury_spending_v1",
-  "version": "1.5.0",
-  "last_updated": "2026-07-10",
+  "version": "1.6.0",
+  "last_updated": "2026-07-15",
   "description": "Rolling-window NCL spending framework with post-AI cost evaluation",
   "spending_model": {
     "type": "rolling_window",
@@ -281,7 +281,7 @@
   "dossier_gate": {
     "mode": "hard",
     "incomplete_penalty": -0.1,
-    "rationale": "Doctrine v1.4.0 restores the strict evidence rule: an incomplete treasury dossier means NEEDS_MORE_INFO, never directional NO. Missing information is not affirmative evidence of waste. Directional NO requires independently verified evidence of low value, duplication, excessive cost, failed delivery, private capture, or unacceptable downside; YES requires verified benefit, delivery, cost, and protection floors."
+    "rationale": "Doctrine v1.4.0 restores the strict evidence rule: an incomplete treasury dossier means NEEDS_MORE_INFO, never directional NO. Missing information is not affirmative evidence of waste. Directional NO requires independently verified evidence of low value, duplication, excessive cost, failed delivery, private capture, or unacceptable downside; YES requires verified benefit, delivery, cost, and protection floors. incomplete_penalty is dormant under mode 'hard': the engine reads it only in mode 'soft' (an explicit doctrine amendment or BEACN_TREASURY_GATE_MODE=soft), where a dossier-less action would be judged directionally with this caution penalty instead of being held."
   },
   "profile_rules": {
     "version_added": "1.2.0",
@@ -315,7 +315,7 @@
       "max_material_discrepancies": 0
     },
     "human_role": "Random spot-checks of the published dossiers, receipts, and verification attestations on the public website (all published per action). Any human finding of a fabricated or contradicted fact reverts that dossier to 'no' and is a doctrine incident.",
-    "fail_safe": "A dossier that fails verification keeps dossier_complete='no' (engine keeps the soft-gate caution penalty and the wider \u00b10.12 threshold). Verification can only ever RAISE the evidence bar that was met, never lower a gate.",
+    "fail_safe": "A dossier that fails verification keeps dossier_complete='no'; under the current hard gate that holds the executable vote at NEEDS_MORE_INFO and the wider \u00b10.12 directional threshold applies (only in soft mode would the action instead be judged directionally with the incomplete_penalty caution penalty). Verification can only ever RAISE the evidence bar that was met, never lower a gate.",
     "kill_switch": "BEACN_DOSSIER_AUTOAPPROVE_DISABLED=1 stops agentic approval; --approve remains for manual review."
   }
 }

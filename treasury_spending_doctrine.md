@@ -6,13 +6,13 @@ The Cardano treasury exists to fund sustainable ecosystem growth, not to be drai
 
 ---
 
-## Dossier Gate Posture (amended 2026-07-10, v1.5.0)
+## Dossier Gate Posture (amended 2026-07-10, v1.5.0; reconciled 2026-07-15, v1.6.0)
 
 BEACN separates **intrinsic merit** from **execution eligibility**. A proposal can clear the
 benefit, delivery, cost, and downside-risk floors while its executable vote remains held by an
 unverified dossier, NCL, or portfolio-capacity gate. Both conclusions are published.
 
-- **Hard gate (current):** incomplete independently verified diligence means `NEEDS_MORE_INFO`, never an automatic NO.
+- **Hard gate (current):** incomplete independently verified diligence means `NEEDS_MORE_INFO`, never an automatic NO. The JSON's `dossier_gate.incomplete_penalty` is dormant under the hard gate — the engine reads it only if `mode` is ever set back to soft.
 - **No outcome exceptions:** founder use, identity, popularity, and private preference have zero direct weight.
 - **Counterfactual risk:** for established infrastructure, the engine evaluates the ecosystem cost of non-funding, workflow dependency, replacement difficulty, sustained operation, and verified adoption alongside spending risk.
 - **Final abstention is exceptional:** unresolved diligence is an active research state. ABSTAIN is reserved for conflicts, mandate limits, or cases where participation itself would be inappropriate.
@@ -123,6 +123,7 @@ When evaluating a `TreasuryWithdrawals` proposal, the bot must consider:
 
 | Condition | Adjustment | Rationale |
 |---|---|---|
+| Proposal requests > 15% of `available(e)` | Flag: MODERATE (context signal, no score penalty) | Concentration worth naming in the rationale. |
 | Proposal requests > 30% of `available(e)` | Penalty: HIGH | Single-proposal concentration risk. |
 | Proposal requests > 50% of `available(e)` | Penalty: SEVERE | Near-monopoly on remaining capacity. |
 | 5+ withdrawals already approved this epoch | Penalty: MODERATE | Spending cluster — each marginal withdrawal gets more scrutiny. |
@@ -198,6 +199,9 @@ fund_order = sort(eligible_proposals, key=drep_approval_pct, desc=True)
 
 # Concentration risk
 concentration(p) = p.amount / available(current_epoch)
+# concentration > 0.15 = moderate flag
+# concentration > 0.30 = high penalty
+# concentration > 0.50 = severe penalty
 
 # Cost reasonableness (post-AI)
 cost_ratio = requested_ada / estimated_post_ai_cost

@@ -55,7 +55,9 @@
 - `committee_update_doctrine.md`
 - `info_action_doctrine.md`
 - `constitutional_amendment_doctrine.md`
+- `no_confidence_doctrine.md`
 - `values_hierarchy.md`
+- `DOCTRINE_PRECEDENCE.md`
 - `GOVERNANCE_PHILOSOPHY.md`
 - `scoring_weights.json`
 - `WHY_DELEGATE.md`
